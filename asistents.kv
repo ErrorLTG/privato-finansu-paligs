@@ -1,0 +1,218 @@
+#:kivy 2.2.1
+
+WindowManager:
+    IncomeWindow:
+    ExpenseWindow:
+
+<IncomeWindow>:
+    name: "incomeScreen"
+    
+
+    FloatLayout:
+        id: mainLayout
+        size: root.width, root.height
+        canvas:
+            Color:
+                rgba: 0.15, 0, 0.08, 1  # Set the default background color to red
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        AnchorLayout:
+            anchor_x: "left"
+            anchor_y: "top"
+            Button: 
+                text: "Ienākumi"
+                size_hint: None, None
+                size: self.texture_size
+                background_color: 0,0,0,0
+                bacground_disabled_normal: ""
+                color: 0.004, 0.761, 0.969, 1 # Color blue
+                # font_size: 20
+                padding: 50,25,0,5
+                bold: True
+                canvas.before:
+                    Color:
+                        rgba: 1,1,1,1
+                    Line:
+                        points: self.x + self.padding[0], self.y, self.x + self.width, self.y
+
+
+        AnchorLayout:
+            anchor_x: "right"
+            anchor_y: "top"
+            Button: # Ekrānu maiņa - Izdevumi
+                text: "Izdevumi"
+                size_hint: None, None
+                size: self.texture_size
+                background_color: 0,0,0,0
+                color: 0.6, 0.6, 0.596, 1 # Color gray 
+                font_size: 20
+                padding: 0,25,50,5
+                bold: True
+                on_release: 
+                    root.manager.current = "expenseScreen"
+                    root.manager.transition.direction = "left"
+                
+
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "top"
+            Label:
+                id: budgetLabel
+                text: "FAIL"
+                font_size: 20
+                size_hint: None, None
+                size: self.texture_size
+                padding: 0,25,0,0
+
+        
+
+        Label:
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 20
+            pos_hint: {"center_x": 0.5, "top": 0.75}
+            text: "Ievadiet Jūsu ienākumus"
+
+        TextInput:
+            multiline: False
+            text: ""
+            id: incomeValue
+            input_filter: 'int'
+            size_hint: 0.2, None
+            height: self.minimum_height
+            background_color: 1,1,1,0
+            foreground_color: 1,1,1,1
+            font_size: 20
+            pos_hint: {"center_x": 0.5, "top": 0.7}
+            padding: 7
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,1
+                Line:
+                    width: 1
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, 10, 10, 10, 10)
+
+        
+
+
+        Button:
+            text: "Apstiprināt"
+            disabled: True if incomeValue.text == "" else False
+            on_press: root.callbackConfirm()
+            on_release: incomeValue.text = ""
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 20
+            padding: 20
+            pos_hint: {"center_x": 0.5, "y": 0.2}
+        
+    FloatLayout:
+        size: root.width, root.height
+        id: historyLayout
+    
+
+<ExpenseWindow>:
+    name: "expenseScreen"
+
+    FloatLayout:
+        size: root.width, root.height
+        id: mainLayout
+
+        canvas:
+            Color:
+                rgba: 0.15, 0, 0.08, 1  # Set the default background color to red
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        AnchorLayout:
+            anchor_x: "left"
+            anchor_y: "top"
+            Button: 
+                text: "Ienākumi"
+                size_hint: None, None
+                size: self.texture_size
+                background_color: 0,0,0,0
+                bacground_disabled_normal: ""
+                color: 0.6, 0.6, 0.596, 1 # Color gray
+                font_size: 20
+                padding: 50,25,0,0
+                bold: True
+                on_release: 
+                    root.manager.current = "incomeScreen"
+                    root.manager.transition.direction = "right"
+                
+        AnchorLayout:
+            anchor_x: "right"
+            anchor_y: "top"
+            Button: # Ekrānu maiņa - Izdevumi
+                text: "Izdevumi"
+                size_hint: None, None
+                size: self.texture_size
+                background_color: 0,0,0,0
+                color: 0.004, 0.761, 0.969, 1 # Color blue
+                font_size: 20
+                padding: 0,25,50,5
+                bold: True
+                canvas.before:
+                    Color:
+                        rgba: 1,1,1,1
+                    Line:
+                        points: self.x, self.y, self.x + self.width - self.padding[2], self.y
+
+                
+
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "top"
+            Label:
+                id: budgetLabel
+                text: "FAIL"
+                font_size: 20
+                size_hint: None, None
+                size: self.texture_size
+                padding: 0,25,0,0
+        
+
+        Label:
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 20
+            pos_hint: {"center_x": 0.5, "top": 0.75}
+            text: "Ievadiet Jūsu izdevumus"
+
+        TextInput:
+            multiline: False
+            text: ""
+            id: expenseValue
+            input_filter: 'int'
+            size_hint: 0.2, None
+            height: self.minimum_height
+            background_color: 1,1,1,0
+            foreground_color: 1,1,1,1
+            font_size: 20
+            pos_hint: {"center_x": 0.5, "top": 0.7}
+            padding: 7
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,1
+                Line:
+                    width: 1
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, 10, 10, 10, 10)
+                
+        Button:
+            text: "Apstiprināt"
+            disabled: True if expenseValue.text == "" else False
+            on_press: root.callbackConfirm()
+            on_release: expenseValue.text = ""
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 20
+            padding: 20
+            pos_hint: {"center_x": 0.5, "y": 0.2}
+
+    FloatLayout:
+        size: root.width, root.height
+        id: historyLayout
